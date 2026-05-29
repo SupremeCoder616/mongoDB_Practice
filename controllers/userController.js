@@ -27,3 +27,19 @@ export const createUser = async (req, res) => {
       .json({ message: "Error creating user", error: error.message });
   }
 };
+
+export const getUsers = async (req, res) => {
+  try {
+    //const users = await User.find({ age: { $gt: 25 } }); //! fetching users with age greater than 25
+    const users = await User.find({
+      age: { $lte: 35 },
+      // "address.state": { $in: ["Punjab", "Rajasthan"] },
+      skills: { $in: ["JavaScript", "Node.js"] },
+    });
+    return res.status(200).json({ userCount: users.length, users });
+  } catch (error) {
+    return res
+      .status(500)
+      .json({ message: "Error fetching users", error: error.message });
+  }
+};
